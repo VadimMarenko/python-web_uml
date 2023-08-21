@@ -1,9 +1,9 @@
 from note_classes import NoteRecord, Note, Tag, n_book
 from decorator import input_error
 from datetime import datetime
-from rich import box
-from rich.table import Table
-from rich.console import Console
+from cl_interface import ConsoleInterface
+
+cli = ConsoleInterface()
 
 @input_error
 def func_exit(*args):
@@ -74,24 +74,7 @@ def note_find(*args):
 #=========================================================
 @input_error
 def note_show(*args):
-    if len(n_book.data) == 0: return f"The database is empty"
-    if args[0].startswith("/") and args[0][1:].isdigit():
-        args = int(args[0][1:])
-    else:
-        args = 5    
-    for page, rec in enumerate(n_book.iterator(args), 1):
-        print(f"Page {page}\n")
-   
-    table = Table(box=box.DOUBLE)
-    table.add_column("Num", justify="center", style="green", no_wrap=True)
-    table.add_column("Key", justify="center", style="green", no_wrap=True)
-    table.add_column("Note", justify="center", style="yellow", no_wrap=True)
-    table.add_column("Tag", justify="center", style="red", no_wrap=True)
-    table.add_column("Date", justify="center", style="blue", no_wrap=True)
-
-    console = Console()
-    _ = [table.add_row(str(i), str(item.key), str(item.note), str(item.tag), str(datetime.fromtimestamp(float(item.key)))) for i, item in enumerate(rec, 1)]
-    console.print(table)
+    cli.display_notes(n_book)
     return ""
   
 
@@ -102,22 +85,7 @@ def note_show(*args):
 #=========================================================
 @input_error
 def note_sort(args):    
-    result = []
-    for rec in n_book.values():
-        line = f"{rec.tag}  {rec.note}  {rec.key}"
-        result.append(line)
-    result.sort()
-    count = 0
-    
-    table = Table(box=box.DOUBLE)
-    table.add_column("Num", justify="center", style="green", no_wrap=True)
-    table.add_column("Tag / Note", justify="left", style="green", no_wrap=True)
-    table.add_column("Key", justify="center", style="green", no_wrap=True)
-    table.add_column("Date", justify="center", style="blue", no_wrap=True)
-
-    console = Console()
-    _ = [table.add_row(str(i), str(item[:item.rfind(" ")]), str(item[item.rfind(" "):]), str(datetime.fromtimestamp(float(item[item.rfind(" "):])))) for i, item in enumerate(result, 1)]
-    console.print(table)    
+    cli.sort_notes(args, n_book)
     return ""
 
 #=========================================================
