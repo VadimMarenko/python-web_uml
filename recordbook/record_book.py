@@ -52,12 +52,14 @@ def add_phone(*args):
 # example >> add email Mike mike.djonsen@gmail.com
 #=========================================================
 @input_error 
-def add_email(*args) -> str:    
-    rec = book[args[0].capitalize()]
-    email = Email(args[1])
-    rec.add_email(email)
-    return f'The contact "{args[0].capitalize()}" was updated with new email: {rec.email}'
-
+def add_email(*args):    
+    rec = book.get(args[0].capitalize())
+    if rec:
+        email = Email(args[1])
+        rec.add_email(email)
+        return f'The contact "{args[0].capitalize()}" was updated with new email: {rec.email}'
+    else:
+        return f"Record {args[0].capitalize()} does not exist"
 
 #=========================================================
 # >> add ...  DONE
@@ -66,11 +68,13 @@ def add_email(*args) -> str:
 # example >> add address Mike Stepan Banderi Avenue, 11A
 #=========================================================
 @input_error 
-def add_address(*args) -> str:    
-    rec = book[args[0].capitalize()]
-    rec.add_address(args[1:])
-    return f'The contact "{args[0].capitalize()}" was updated with new address: {rec.address}'
-
+def add_address(*args):    
+    rec = book.get(args[0].capitalize())
+    if rec:
+        rec.add_address(args[1:])
+        return f'The contact "{args[0].capitalize()}" was updated with new address: {rec.address}'
+    else:
+        return f"Record {args[0].capitalize()} does not exist"
 
 #=========================================================
 # >> add ...  DONE
@@ -79,10 +83,14 @@ def add_address(*args) -> str:
 # example >> add birthday 31.12.2000
 #=========================================================
 @input_error
-def add_birthday(*args) -> str:    
-    rec = book[args[0].capitalize()]
-    rec.add_to_birthday(Birthday(args[1])) 
-    return f"Date of birth {args[0].capitalize()}, recorded"
+def add_birthday(*args):
+    name = Name(args[0].capitalize())  
+    rec = book.get(str(name))
+    if rec:
+        rec.add_to_birthday(Birthday(args[1])) 
+        return f"Date of birth {args[0].capitalize()}, recorded"
+    else:
+        return f"Record {str(name)} does not exist"
 
 
 #=========================================================
@@ -91,8 +99,8 @@ def add_birthday(*args) -> str:
 # с номерами телефонов в консоль. 
 #=========================================================
 @input_error
-def func_show_all(_)->str:
-    cli.display_contacts(book)
+def func_show_all(args)->str:
+    cli.display_contacts(args, book)
     return ""
         
 
@@ -177,7 +185,7 @@ def func_get_day_birthday(*args):
 
 @input_error
 def delete(*args):    
-    rec = book[args[1].capitalize()]
+    rec = book.get(args[1].capitalize())
     if args[0].lower() == "name":
         if book[args[1].capitalize()].name.value == args[1].capitalize():
             del book[args[1].capitalize()]

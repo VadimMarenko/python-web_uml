@@ -7,7 +7,7 @@ from rich.table import Table
 from rich.console import Console
 
 class ConsoleInterface(AbstractUserInterface):
-    def display_contacts(self, book: AddressBook):
+    def display_contacts(self, arg, book: AddressBook):
         if len(book.data) == 0: 
             return "The database is empty"
         else: 

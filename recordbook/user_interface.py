@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 class AbstractUserInterface(ABC):
 
    @abstractmethod
-   def display_contacts(self, contacts):
+   def display_contacts(self, arg, contacts):
       pass
    
    @abstractmethod
