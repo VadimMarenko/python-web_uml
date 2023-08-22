@@ -1,5 +1,5 @@
 from user_interface import AbstractUserInterface
-from record_classes import AddressBook, Record, Name, Phone, Email, Birthday, Address, book
+from record_classes import AddressBook, book
 from note_classes import NoteBook, n_book
 from datetime import datetime
 from rich import box
