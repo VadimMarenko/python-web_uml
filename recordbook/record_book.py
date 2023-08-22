@@ -1,9 +1,5 @@
-
 from record_classes import AddressBook, Record, Name, Phone, Email, Birthday, Address, book
 from decorator import input_error
-# from rich import box
-# from rich.table import Table
-# from rich.console import Console
 import re
 from record_classes import PhoneException, BirthdayException, EmailException
 from cl_interface import ConsoleInterface
@@ -53,7 +49,7 @@ def add_phone(*args):
 #=========================================================
 @input_error 
 def add_email(*args):    
-    rec = book.get(args[0].capitalize())
+    rec = book[args[0].capitalize()]
     if rec:
         email = Email(args[1])
         rec.add_email(email)
@@ -83,14 +79,13 @@ def add_address(*args):
 # example >> add birthday 31.12.2000
 #=========================================================
 @input_error
-def add_birthday(*args):
-    name = Name(args[0].capitalize())  
-    rec = book.get(str(name))
+def add_birthday(*args):    
+    rec = book[args[0].capitalize()]
     if rec:
         rec.add_to_birthday(Birthday(args[1])) 
         return f"Date of birth {args[0].capitalize()}, recorded"
     else:
-        return f"Record {str(name)} does not exist"
+        return f"Record {args[0].capitalize()} does not exist"
 
 
 #=========================================================
@@ -184,8 +179,8 @@ def func_get_day_birthday(*args):
 # ======================================================================================================
 
 @input_error
-def delete(*args):    
-    rec = book.get(args[1].capitalize())
+def delete(*args):        
+    rec = book[args[1].capitalize()]
     if args[0].lower() == "name":
         if book[args[1].capitalize()].name.value == args[1].capitalize():
             del book[args[1].capitalize()]
