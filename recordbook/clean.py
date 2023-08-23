@@ -114,8 +114,8 @@ def file_list():
         for element in value[0]:
             if len(element) > len(longest_element):
                 longest_element = element
-              
-        ext = "Extensions: " + ", ".join(value[1]) 
+
+        ext = "Extensions: " + ", ".join(value[1])
         if len(ext) > len(longest_element):
             longest_element = ext
 

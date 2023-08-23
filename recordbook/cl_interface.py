@@ -6,33 +6,44 @@ from rich import box
 from rich.table import Table
 from rich.console import Console
 
+
 class ConsoleInterface(AbstractUserInterface):
     def display_contacts(self, arg, book: AddressBook):
-        if len(book.data) == 0: 
+        if len(book.data) == 0:
             return "The database is empty"
-        else: 
+        else:
             table = Table(box=box.DOUBLE)
             table.add_column("Name", justify="center", style="cyan", no_wrap=True)
-            table.add_column("Phone number", justify="center", style="green", no_wrap=True)
+            table.add_column(
+                "Phone number", justify="center", style="green", no_wrap=True
+            )
             table.add_column("Email", justify="center", style="red", no_wrap=True)
             table.add_column("Birthday", justify="center", style="yellow", no_wrap=True)
             table.add_column("Address", justify="center", style="red", no_wrap=True)
 
             console = Console()
-            _ = [table.add_row(str(record.name), str(', '.join(map(lambda phone: phone.value, record.phones))), str(record.email.value), str(record.birthday.value), str(record.address.value)) for record in book.data.values()]
+            _ = [
+                table.add_row(
+                    str(record.name),
+                    str(", ".join(map(lambda phone: phone.value, record.phones))),
+                    str(record.email.value),
+                    str(record.birthday.value),
+                    str(record.address.value),
+                )
+                for record in book.data.values()
+            ]
             console.print(table)
 
-    
     def display_notes(self, n_book: NoteBook):
-        if len(n_book.data) == 0: 
+        if len(n_book.data) == 0:
             return f"The database is empty"
         # if args[0].startswith("/") and args[0][1:].isdigit():
         #     args = int(args[0][1:])
         # else:
-        args = 5    
+        args = 5
         for page, rec in enumerate(n_book.iterator(args), 1):
             print(f"Page {page}\n")
-    
+
         table = Table(box=box.DOUBLE)
         table.add_column("Num", justify="center", style="green", no_wrap=True)
         table.add_column("Key", justify="center", style="green", no_wrap=True)
@@ -41,10 +52,18 @@ class ConsoleInterface(AbstractUserInterface):
         table.add_column("Date", justify="center", style="blue", no_wrap=True)
 
         console = Console()
-        _ = [table.add_row(str(i), str(item.key), str(item.note), str(item.tag), str(datetime.fromtimestamp(float(item.key)))) for i, item in enumerate(rec, 1)]
+        _ = [
+            table.add_row(
+                str(i),
+                str(item.key),
+                str(item.note),
+                str(item.tag),
+                str(datetime.fromtimestamp(float(item.key))),
+            )
+            for i, item in enumerate(rec, 1)
+        ]
         console.print(table)
-        
-    
+
     def sort_notes(self, arg, n_book: NoteBook):
         result = []
         for rec in n_book.values():
@@ -52,7 +71,7 @@ class ConsoleInterface(AbstractUserInterface):
             result.append(line)
         result.sort()
         count = 0
-        
+
         table = Table(box=box.DOUBLE)
         table.add_column("Num", justify="center", style="green", no_wrap=True)
         table.add_column("Tag / Note", justify="left", style="green", no_wrap=True)
@@ -60,9 +79,16 @@ class ConsoleInterface(AbstractUserInterface):
         table.add_column("Date", justify="center", style="blue", no_wrap=True)
 
         console = Console()
-        _ = [table.add_row(str(i), str(item[:item.rfind(" ")]), str(item[item.rfind(" "):]), str(datetime.fromtimestamp(float(item[item.rfind(" "):])))) for i, item in enumerate(result, 1)]
-        console.print(table)    
-
+        _ = [
+            table.add_row(
+                str(i),
+                str(item[: item.rfind(" ")]),
+                str(item[item.rfind(" ") :]),
+                str(datetime.fromtimestamp(float(item[item.rfind(" ") :]))),
+            )
+            for i, item in enumerate(result, 1)
+        ]
+        console.print(table)
 
     def display_help(self, commands):
         help_navigation = """[bold red]help all[/bold red] - виводить всю довідку на екран
@@ -110,7 +136,7 @@ class ConsoleInterface(AbstractUserInterface):
         example >> [bold blue]note sort /10[/bold blue]"""
         sort = """[bold red]sort dir[/bold red] - виконує сортування файлів в указаній папці
         example >> [bold blue]sort dir <Path_to_folder>[/bold blue]"""
-        
+
         if commands == "contact":
             return contact
         if commands == "note":
@@ -121,7 +147,6 @@ class ConsoleInterface(AbstractUserInterface):
             return help_navigation + contact + note + sort
 
         return help_navigation
-
 
 
 if __name__ == "__main__":

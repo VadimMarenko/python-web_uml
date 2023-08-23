@@ -5,100 +5,106 @@ from cl_interface import ConsoleInterface
 
 cli = ConsoleInterface()
 
+
 @input_error
 def func_exit(*args):
-    #save_noteDB(path_note)
-    return "Good bye!"   
+    # save_noteDB(path_note)
+    return "Good bye!"
 
 
-#=========================================================
+# =========================================================
 # Блок функцій для роботи з нотатками
-#=========================================================
-# >> note add <текст нотатки будь-якої довжини> <teg-ключове слово> 
+# =========================================================
+# >> note add <текст нотатки будь-якої довжини> <teg-ключове слово>
 # example >> note add My first note in this bot. Note
-#=========================================================
+# =========================================================
 @input_error
-def note_add(*args):    
+def note_add(*args):
     key = str(datetime.now().replace(microsecond=0).timestamp())
     note = Note(" ".join(args[:]))
     arg_tag = input("Tag input >>> ")
-    tag = Tag(arg_tag) 
+    tag = Tag(arg_tag)
     record = NoteRecord(key, note if note else "", tag if note else "")
     return n_book.add_record(record)
 
 
-#=========================================================
+# =========================================================
 # >> note del <key-ідентифікатор запису>
 # example >> note del 1691245959.0
-#=========================================================
+# =========================================================
 @input_error
 def note_del(*args):
     key = args[0]
-    rec : NoteRecord = n_book.get(key)
+    rec: NoteRecord = n_book.get(key)
     try:
         return n_book.del_record(rec)
     except KeyError:
         return f"Record {key} does not exist."
-            
 
-#=========================================================
+
+# =========================================================
 # >> note change <key-record> <New notes> <tag>
-# example >> note change 1691245959.0 My new notes. Tag 
-#=========================================================
+# example >> note change 1691245959.0 My new notes. Tag
+# =========================================================
 @input_error
 def note_change(*args):
     key = args[0]
     note = Note(" ".join(args[1:]))
     tag = Tag(input("Enter tag >>> "))
-    rec : NoteRecord = n_book.get(key)
+    rec: NoteRecord = n_book.get(key)
     if rec:
-        return rec.change_note(rec.note.value, note if note else rec.note.value, tag if tag else rec.tag.value)
+        return rec.change_note(
+            rec.note.value,
+            note if note else rec.note.value,
+            tag if tag else rec.tag.value,
+        )
     else:
         return f"Record does not exist"
-    
 
-#=========================================================
+
+# =========================================================
 # >> note find <fragment>
 # Фрагмент має бути однією фразою без пробілів
 # example >> note find word
-#=========================================================
+# =========================================================
 @input_error
 def note_find(*args):
     return n_book.find_note(args[0])
 
 
-#=========================================================
+# =========================================================
 # >> note show <int: необов'язковий аргумент кількості рядків>
-# Передається необов'язковий аргумент кількості рядків 
+# Передається необов'язковий аргумент кількості рядків
 # example >> note show /15
-#=========================================================
+# =========================================================
 @input_error
 def note_show(*args):
     cli.display_notes(n_book)
     return ""
-  
 
-#=========================================================
+
+# =========================================================
 # >> note sort
 # Сортування нотаток по тегу
 # example >> note sort
-#=========================================================
+# =========================================================
 @input_error
-def note_sort(args):    
+def note_sort(args):
     cli.sort_notes(args, n_book)
     return ""
 
-#=========================================================
+
+# =========================================================
 # Функція читає базу даних з файлу - ОК
-#========================================================= 
+# =========================================================
 @input_error
 def load_noteDB(path):
     return n_book.load_data(path)
 
 
-#=========================================================
+# =========================================================
 # Функція читає базу даних з файлу - ОК
-#========================================================= 
+# =========================================================
 @input_error
 def save_noteDB(path):
     return n_book.save_data(path)
