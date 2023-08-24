@@ -58,10 +58,12 @@ def note_del(*args):
 @input_error
 def note_change(*args):
     key = note_key(args[0])
-    note = Note(" ".join(args[1:]))
-    tag = Tag(input("Enter tag >>> "))
     rec: NoteRecord = n_book.get(key)
+
     if rec:
+        note = Note(input(" ".join(args[1:]) + ">>> "))
+        tag = Tag(input("Enter tag >>> "))
+
         return rec.change_note(
             rec.note.value,
             note if note else rec.note.value,
