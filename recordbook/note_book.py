@@ -29,12 +29,21 @@ def note_add(*args):
 
 
 # =========================================================
+# num record to key
+# =========================================================
+def note_key(args):
+    for i, key in enumerate(n_book.keys(), 0):
+        if i == int(args[0]):
+            return key
+
+
+# =========================================================
 # >> note del <key-ідентифікатор запису>
 # example >> note del 1691245959.0
 # =========================================================
 @input_error
 def note_del(*args):
-    key = args[0]
+    key = note_key(args[0])
     rec: NoteRecord = n_book.get(key)
     try:
         return n_book.del_record(rec)
@@ -48,7 +57,7 @@ def note_del(*args):
 # =========================================================
 @input_error
 def note_change(*args):
-    key = args[0]
+    key = note_key(args[0])
     note = Note(" ".join(args[1:]))
     tag = Tag(input("Enter tag >>> "))
     rec: NoteRecord = n_book.get(key)

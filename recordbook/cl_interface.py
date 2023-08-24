@@ -60,7 +60,7 @@ class ConsoleInterface(AbstractUserInterface):
                 str(item.tag),
                 str(datetime.fromtimestamp(float(item.key))),
             )
-            for i, item in enumerate(rec, 1)
+            for i, item in enumerate(rec, 0)
         ]
         console.print(table)
 
@@ -86,7 +86,7 @@ class ConsoleInterface(AbstractUserInterface):
                 str(item[item.rfind(" ") :]),
                 str(datetime.fromtimestamp(float(item[item.rfind(" ") :]))),
             )
-            for i, item in enumerate(result, 1)
+            for i, item in enumerate(result, 0)
         ]
         console.print(table)
 
