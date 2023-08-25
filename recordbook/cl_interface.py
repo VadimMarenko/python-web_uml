@@ -46,7 +46,7 @@ class ConsoleInterface(AbstractUserInterface):
 
         table = Table(box=box.DOUBLE)
         table.add_column("Num", justify="center", style="green", no_wrap=True)
-        table.add_column("Key", justify="center", style="green", no_wrap=True)
+        # table.add_column("Key", justify="center", style="green", no_wrap=True)
         table.add_column("Note", justify="center", style="yellow", no_wrap=True)
         table.add_column("Tag", justify="center", style="red", no_wrap=True)
         table.add_column("Date", justify="center", style="blue", no_wrap=True)
@@ -55,7 +55,7 @@ class ConsoleInterface(AbstractUserInterface):
         _ = [
             table.add_row(
                 str(i),
-                str(item.key),
+                # str(item.key),
                 str(item.note),
                 str(item.tag),
                 str(datetime.fromtimestamp(float(item.key))),
@@ -75,7 +75,7 @@ class ConsoleInterface(AbstractUserInterface):
         table = Table(box=box.DOUBLE)
         table.add_column("Num", justify="center", style="green", no_wrap=True)
         table.add_column("Tag / Note", justify="left", style="green", no_wrap=True)
-        table.add_column("Key", justify="center", style="green", no_wrap=True)
+        # table.add_column("Key", justify="center", style="green", no_wrap=True)
         table.add_column("Date", justify="center", style="blue", no_wrap=True)
 
         console = Console()
@@ -83,7 +83,7 @@ class ConsoleInterface(AbstractUserInterface):
             table.add_row(
                 str(i),
                 str(item[: item.rfind(" ")]),
-                str(item[item.rfind(" ") :]),
+                # str(item[item.rfind(" ") :]),
                 str(datetime.fromtimestamp(float(item[item.rfind(" ") :]))),
             )
             for i, item in enumerate(result, 0)
